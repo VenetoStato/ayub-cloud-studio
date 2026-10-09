@@ -1,0 +1,33 @@
+# AYUB CLOUD STUDIO + Caddy (HTTPS automatico Let's Encrypt)
+# Uso: cp .env.example .env  (compila DOMAIN, STUDIO_PASSWORD, SESSION_SECRET)  ->  docker compose up -d
+services:
+  studio:
+    build: .
+    restart: unless-stopped
+    environment:
+      STUDIO_PASSWORD: ${STUDIO_PASSWORD:?imposta STUDIO_PASSWORD nel file .env}
+      SESSION_SECRET: ${SESSION_SECRET:-}
+    volumes:
+      - ./data:/data
+    expose:
+      - "8790"
+
+  caddy:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    depends_on:
+      - studio
+    environment:
+      DOMAIN: ${DOMAIN}
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  caddy_data:
+  caddy_config:

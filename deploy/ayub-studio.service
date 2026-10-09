@@ -1,0 +1,32 @@
+# AYUB CLOUD STUDIO — unit systemd (alternativa a docker)
+# Installazione:
+#   1. adatta User, WorkingDirectory ed ExecStart ai tuoi percorsi
+#   2. sudo cp deploy/ayub-studio.service /etc/systemd/system/
+#   3. sudo systemctl daemon-reload && sudo systemctl enable --now ayub-studio
+#   4. log:  journalctl -u ayub-studio -f
+# Mettilo dietro un reverse proxy HTTPS (Caddy/nginx): microfono e MIDI richiedono HTTPS.
+[Unit]
+Description=AYUB CLOUD STUDIO (INTERFACE 2037)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+# utente che possiede la cartella del progetto
+User=ayub
+# cartella del repo (contiene server/, dist/, node_modules/)
+WorkingDirectory=/opt/ayub-cloud
+Environment=NODE_ENV=production
+Environment=PORT=8790
+# dati (progetti + audio); di default <repo>/data
+Environment=DATA_DIR=/opt/ayub-cloud/data
+# password e segreto: meglio in un file separato non versionato
+# (righe STUDIO_PASSWORD=... e SESSION_SECRET=...)
+EnvironmentFile=-/opt/ayub-cloud/.env
+# percorso di node: verifica con `which node` (serve Node >= 18)
+ExecStart=/usr/bin/node server/server.js
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

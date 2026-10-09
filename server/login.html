@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>INTERFACE 2037 — ACCESSO</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=VT323&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+:root{--fg:#7dff9a;--dim:#2c7a44;--bg:#010402;--amber:#ffb340;--red:#ff4a3d}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--fg);font-family:'Share Tech Mono',monospace}
+body{display:grid;place-items:center;text-shadow:0 0 6px rgba(125,255,154,.55)}
+body:after{content:"";position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(0deg,rgba(0,0,0,.35) 0 1px,transparent 1px 3px),radial-gradient(ellipse at center,transparent 55%,rgba(0,0,0,.75));}
+.box{width:min(560px,92vw);border:1px solid var(--dim);padding:28px 30px;position:relative}
+.box:before,.box:after{content:"";position:absolute;width:14px;height:14px;border:2px solid var(--fg)}
+.box:before{top:-2px;left:-2px;border-right:0;border-bottom:0}.box:after{bottom:-2px;right:-2px;border-left:0;border-top:0}
+h1{font-family:VT323,monospace;font-weight:400;font-size:44px;letter-spacing:4px;margin:0 0 4px}
+.sub{color:var(--dim);letter-spacing:3px;font-size:13px;margin-bottom:26px}
+.line{font-family:VT323;font-size:22px;margin:4px 0}
+label{display:block;font-size:13px;letter-spacing:3px;color:var(--amber);margin:18px 0 6px}
+input{width:100%;background:transparent;border:0;border-bottom:1px solid var(--dim);color:var(--fg);font:22px VT323,monospace;letter-spacing:3px;padding:4px 2px;outline:0;text-shadow:inherit;text-transform:uppercase}
+input:focus{border-bottom-color:var(--fg)}
+button{margin-top:26px;width:100%;background:transparent;border:1px solid var(--fg);color:var(--fg);font:24px VT323;letter-spacing:6px;padding:8px;cursor:pointer;text-shadow:inherit}
+button:hover{background:var(--fg);color:var(--bg)}
+#err{color:var(--red);font-family:VT323;font-size:22px;min-height:26px;margin-top:12px;letter-spacing:2px}
+.cur{animation:b 1s steps(1) infinite}@keyframes b{50%{opacity:0}}
+</style></head><body>
+<form class="box" id="f">
+  <h1>INTERFACE 2037</h1>
+  <div class="sub">AYUB AUDIO SYSTEMS · MULTI-OPERATOR SEQUENCER</div>
+  <div class="line">READY FOR INQUIRY<span class="cur">█</span></div>
+  <label>NOME OPERATORE</label><input id="n" autocomplete="username" required maxlength="24" autofocus>
+  <label>CODICE DI ACCESSO</label><input id="p" type="password" autocomplete="current-password" required>
+  <button>ACCEDI</button>
+  <div id="err"></div>
+</form>
+<script>
+n.value = localStorage.getItem('ayub_name') || ''
+// destinazione dopo il login (link invito /?p=<id>): solo percorsi relativi interni
+const nx = new URLSearchParams(location.search).get('next') || '/'
+const dest = /^\/(?![\/\\])/.test(nx) ? nx : '/'
+if (dest !== '/') document.querySelector('.line').firstChild.textContent = 'INVITO RICEVUTO. IDENTIFICARSI'
+f.onsubmit = async (e) => {
+  e.preventDefault(); err.textContent = '> VERIFICA IN CORSO...'
+  let r, j = {}
+  try {
+    r = await fetch('/api/login', { method: 'POST', headers: { 'content-type': 'application/json' }, body: JSON.stringify({ name: n.value.toUpperCase(), password: p.value }) })
+    j = await r.json().catch(() => ({}))
+  } catch { err.textContent = '> CONNESSIONE PERSA. RIPROVA.'; return }
+  if (r.ok) { localStorage.setItem('ayub_name', n.value.toUpperCase()); location.href = dest }
+  else if (r.status === 429) { err.textContent = '> ' + (j.error || 'TROPPI TENTATIVI. RIPROVA PIU\' TARDI.'); p.value = '' }
+  else { err.textContent = '> ' + (j.error || 'ACCESSO NEGATO. CODICE NON VALIDO.'); p.value = '' }
+}
+</script></body></html>

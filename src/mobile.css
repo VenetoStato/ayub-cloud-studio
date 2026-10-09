@@ -1,0 +1,69 @@
+/* AYUB STUDIO — versione mobile (telefono/tablet) */
+body.mobile{overflow:hidden;overscroll-behavior:none;-webkit-user-select:none;user-select:none;-webkit-tap-highlight-color:transparent;font-size:13px}
+#mapp{position:fixed;inset:0;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto minmax(0,1fr) auto;padding:env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left)}
+.mtop{grid-column:1/-1;height:auto;border-bottom:1px solid var(--line2);display:flex;align-items:center;gap:6px;padding:6px 8px;border-bottom:1px solid var(--line2);white-space:nowrap}
+.mtop .logo{display:flex;flex-direction:column;line-height:1;min-width:0;flex:1;overflow:hidden}
+.mtop .logo b{font-family:var(--big);font-size:22px;font-weight:400;letter-spacing:.15em}
+.mtop .logo span{font-size:9px;color:var(--dim);overflow:hidden;text-overflow:ellipsis}
+.mtop button{padding:6px 10px;font-size:15px;min-width:38px}
+#mPos{font-size:20px;min-width:62px;text-align:center}
+#mBpm{width:44px;font-size:16px;color:var(--amber);border:0;background:transparent}
+#mTracks{display:flex;gap:6px;overflow-x:auto;padding:6px 8px;border-bottom:1px solid var(--line);scrollbar-width:none}
+#mTracks::-webkit-scrollbar{display:none}
+#mTracks button{flex:none;padding:6px 10px;font-size:12px;border-left:4px solid var(--tc)}
+#mTracks button small{display:block;font-size:9px;color:var(--dim)}
+#mTracks button.on small{color:inherit}
+#mBody{position:relative;overflow:hidden;min-height:0}
+#mModes{display:grid;grid-template-columns:1fr 1fr 1fr;border-top:1px solid var(--line2)}
+#mModes button{border:0;padding:12px 4px;font-size:13px}
+#mModes button.on{border-top:3px solid var(--fg);background:transparent;color:var(--fg)}
+
+/* tastiera */
+.kpanel{position:absolute;inset:0;display:grid;grid-template-rows:auto 1fr}
+.kbar{display:flex;gap:6px;align-items:center;padding:6px 8px;flex-wrap:wrap}
+.kbar button{padding:8px 12px;font-size:14px}
+.kbar .lbl{font-size:11px;color:var(--dim)}
+.kbar .amb{font-size:15px}
+.kwrap{position:relative;touch-action:none}
+.kwrap canvas{position:absolute;inset:0;width:100%;height:100%;touch-action:none}
+
+/* drum */
+.dpanel{position:absolute;inset:0;display:grid;grid-template-rows:auto 1fr auto;gap:6px;padding:6px}
+.pads{display:grid;grid-template-columns:repeat(4,1fr);grid-template-rows:repeat(4,1fr);gap:6px;touch-action:none;min-height:0}
+.pad{border:1px solid var(--line2);display:flex;align-items:flex-end;justify-content:flex-start;padding:6px;font-size:11px;position:relative;touch-action:none;background:var(--bg2);border-radius:var(--radius)}
+.pad.sel{outline:2px solid var(--amber);outline-offset:-3px}
+.pad.hit{background:var(--fg);color:var(--on-fg);box-shadow:0 0 18px var(--fg)}
+.pad i{position:absolute;top:5px;right:6px;font-style:normal;color:var(--dim);font-size:9px}
+.steps{display:grid;grid-template-columns:repeat(16,1fr);gap:3px;touch-action:none}
+.step{height:34px;border:1px solid var(--line2);border-radius:calc(var(--radius) / 2)}
+.step.q{border-color:var(--fg2)}
+.step.on{background:var(--amber);border-color:var(--amber)}
+.step.now{box-shadow:inset 0 -4px 0 var(--fg)}
+.dinfo{font-size:11px;color:var(--dim);display:flex;justify-content:space-between;gap:8px;align-items:center}
+
+/* voce */
+.vpanel{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;gap:12px;padding:14px;overflow:auto}
+.vbtn{width:150px;height:150px;border-radius:50%;border:3px solid var(--red);color:var(--red);font-size:22px;font-family:var(--big);flex:none}
+.vbtn.on{background:var(--red);color:#fff;animation:blink 1s steps(1) infinite}
+.vtime{font-family:var(--big);font-size:34px}
+.vmeter{width:min(420px,90%);height:14px;border:1px solid var(--line2);position:relative;border-radius:var(--radius)}
+.vmeter div{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,var(--fg),var(--amber),var(--red));width:0}
+.vopts{display:flex;gap:8px;flex-wrap:wrap;justify-content:center}
+.vopts button{padding:8px 12px}
+.vtakes{width:min(520px,100%);display:flex;flex-direction:column;gap:6px}
+.vtake{display:flex;align-items:center;gap:8px;border:1px solid var(--line);padding:8px;border-radius:var(--radius)}
+.vtake span{flex:1;font-size:12px}
+.vtake small{color:var(--dim);display:block}
+.vwarn{color:var(--amber);font-size:12px;text-align:center;max-width:420px;text-transform:none}
+
+/* avvio */
+.mstart{position:fixed;inset:0;display:grid;place-items:center;z-index:40;background:var(--bg);padding:20px}
+.mstart .box{width:min(520px,94vw);padding:20px}
+.mstart h1{font-family:var(--big);font-weight:400;font-size:34px;margin:0 0 6px;letter-spacing:.12em}
+.mstart button.go{width:100%;padding:16px;font-size:20px;font-family:var(--big);margin-top:16px}
+.mstart .p{padding:12px 6px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;gap:8px}
+@media (orientation:landscape) and (max-height:500px){
+  .mtop{padding:3px 6px} .mtop button{padding:3px 8px} #mTracks{padding:3px 6px} #mModes button{padding:6px 4px}
+  .vbtn{width:100px;height:100px}
+}
+#mapp > *{grid-column:1/-1;min-width:0}

@@ -1,0 +1,7 @@
+data/
+node_modules/
+dist/
+.env
+public/samples/
+*.log
+server.log

@@ -1,0 +1,10 @@
+# Caddy ottiene e rinnova da solo il certificato HTTPS per {$DOMAIN}.
+# I websocket (/yjs/...) passano automaticamente con reverse_proxy.
+{$DOMAIN} {
+	encode gzip
+	# upload delle registrazioni (WAV) fino a 300 MB
+	request_body {
+		max_size 300MB
+	}
+	reverse_proxy studio:8790
+}

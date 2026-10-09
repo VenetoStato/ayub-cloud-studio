@@ -1,0 +1,25 @@
+{
+  "name": "ayub-cloud-studio",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "node server/server.js",
+    "build": "vite build",
+    "start": "NODE_ENV=production node server/server.js",
+    "tunnel": "bash deploy/tunnel.sh"
+  },
+  "dependencies": {
+    "cookie-parser": "^1.4.7",
+    "express": "^4.21.2",
+    "lib0": "^0.2.98",
+    "tone": "^15.0.4",
+    "ws": "^8.18.0",
+    "y-protocols": "^1.0.6",
+    "y-websocket": "^1.5.4",
+    "yjs": "^13.6.20"
+  },
+  "devDependencies": {
+    "vite": "^5.4.11"
+  }
+}
